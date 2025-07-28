@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./fav2.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#D4AF37" />
+    <meta name="msapplication-TileColor" content="#1A1A1A" />
+    <meta name="description" content="Hari Trends - Secure Payment Gateway for Premium Fashion Orders" />
+    <meta name="keywords" content="payment, secure, fashion, Hari Trends, checkout" />
+    <title>Secure Payment - Hari Trends</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+      :root {
+        --primary-black: #0A0A0A;
+        --charcoal: #1A1A1A;
+        --gold: #D4AF37;
+        --platinum: #E5E4E2;
+        --pure-white: #FFFFFF;
+        --font-primary: 'Playfair Display', serif;
+        --font-secondary: 'Inter', sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-secondary);
+        background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+        color: var(--platinum);
+        min-height: 100vh;
+      }
+
+      .payment-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .payment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 0;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        margin-bottom: 3rem;
+      }
+
+      .brand-section h1 {
+        font-family: var(--font-primary);
+        font-size: 2.5rem;
+        color: var(--gold);
+        margin: 0;
+        font-weight: 400;
+      }
+
+      .brand-section p {
+        color: var(--platinum);
+        margin: 0.5rem 0 0 0;
+        font-size: 1.1rem;
+      }
+
+      .security-badges {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .security-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 25px;
+        color: var(--gold);
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .payment-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .payment-section {
+        background: rgba(212, 175, 55, 0.05);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .payment-section h2 {
+        color: var(--gold);
+        font-family: var(--font-primary);
+        font-size: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .payment-amount {
+        font-size: 3rem;
+        color: var(--gold);
+        font-weight: 700;
+        margin: 2rem 0;
+      }
+
+      .pay-now-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1.5rem 3rem;
+        background: linear-gradient(135deg, var(--gold) 0%, #B8941F 100%);
+        color: var(--primary-black);
+        border: none;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 2rem 0;
+      }
+
+      .pay-now-button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+      }
+
+      .pay-now-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--primary-black);
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .payment-success {
+        text-align: center;
+        padding: 4rem 2rem;
+      }
+
+      .success-icon {
+        font-size: 5rem;
+        color: #4CAF50;
+        margin-bottom: 2rem;
+      }
+
+      .payment-success h1 {
+        color: var(--gold);
+        font-family: var(--font-primary);
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .payment-success p {
+        color: var(--platinum);
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
+
+      .back-button {
+        padding: 1rem 2rem;
+        background: var(--gold);
+        color: var(--primary-black);
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .back-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+      }
+
+      .payment-footer {
+        text-align: center;
+        padding: 2rem 0;
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+        color: var(--platinum);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .payment-container {
+          padding: 1rem;
+        }
+        
+        .payment-header {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+        }
+        
+        .brand-section h1 {
+          font-size: 2rem;
+        }
+        
+        .security-badges {
+          justify-content: center;
+        }
+        
+        .payment-content {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        
+        .payment-amount {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="payment-container">
+      <!-- Header -->
+      <div class="payment-header">
+        <div class="brand-section">
+          <h1>Hari Trends</h1>
+          <p>Premium Fashion Collection</p>
+        </div>
+        <div class="security-badges">
+          <div class="security-badge">
+            <span>🛡️</span>
+            <span>Secure</span>
+          </div>
+          <div class="security-badge">
+            <span>🔒</span>
+            <span>Encrypted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Content -->
+      <div class="payment-content">
+        <div class="payment-section" id="paymentSection">
+          <h2>🛒 Secure Payment</h2>
+          <div class="payment-amount" id="paymentAmount">Loading...</div>
+          <button class="pay-now-button" id="payNowButton" onclick="handlePayment()" disabled>
+            <span>💳</span>
+            Pay Now
+          </button>
+          <div class="payment-methods">
+            <p>Accepted Payment Methods:</p>
+            <div style="margin-top: 1rem;">
+              <span style="margin: 0 0.5rem; padding: 0.5rem 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 20px; font-size: 0.8rem;">Credit Card</span>
+              <span style="margin: 0 0.5rem; padding: 0.5rem 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 20px; font-size: 0.8rem;">Debit Card</span>
+              <span style="margin: 0 0.5rem; padding: 0.5rem 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 20px; font-size: 0.8rem;">UPI</span>
+              <span style="margin: 0 0.5rem; padding: 0.5rem 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 20px; font-size: 0.8rem;">Net Banking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="payment-footer">
+        <p>© 2024 Hari Trends. All rights reserved. | Secure payments powered by Razorpay</p>
+      </div>
+    </div>
+
+    <script>
+      let paymentData = null;
+      let isProcessing = false;
+
+      // Get payment data from URL parameters
+      function getPaymentData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const dataParam = urlParams.get('data');
+        
+        if (dataParam) {
+          try {
+            paymentData = JSON.parse(decodeURIComponent(dataParam));
+            displayPaymentInfo();
+          } catch (error) {
+            console.error('Error parsing payment data:', error);
+            showError('Invalid payment data');
+          }
+        } else {
+          showError('No payment data found');
+        }
+      }
+
+      function displayPaymentInfo() {
+        if (!paymentData) return;
+
+        const amountElement = document.getElementById('paymentAmount');
+        const payButton = document.getElementById('payNowButton');
+
+        let displayAmount;
+        if (paymentData.type === 'bulk') {
+          const symbol = getCurrencySymbol(paymentData.currency);
+          displayAmount = `${symbol}${parseFloat(paymentData.customAmount).toLocaleString()}`;
+        } else {
+          displayAmount = `₹${(2999 * paymentData.quantity).toLocaleString()}`;
+        }
+
+        amountElement.textContent = displayAmount;
+        payButton.disabled = false;
+      }
+
+      function getCurrencySymbol(currency) {
+        const symbols = {
+          'INR': '₹',
+          'USD': '$',
+          'EUR': '€',
+          'GBP': '£'
+        };
+        return symbols[currency] || '₹';
+      }
+
+      function getCurrencyMultiplier(currency) {
+        const multipliers = {
+          'INR': 1,
+          'USD': 83,
+          'EUR': 90,
+          'GBP': 105
+        };
+        return multipliers[currency] || 1;
+      }
+
+      async function handlePayment() {
+        if (!paymentData || isProcessing) return;
+
+        isProcessing = true;
+        const payButton = document.getElementById('payNowButton');
+        payButton.innerHTML = '<div class="spinner"></div> Processing...';
+        payButton.disabled = true;
+
+        let amount, description;
+
+        if (paymentData.type === 'bulk') {
+          const multiplier = getCurrencyMultiplier(paymentData.currency);
+          const amountInINR = parseFloat(paymentData.customAmount) * multiplier;
+          amount = Math.round(amountInINR) * 100;
+          description = `Bulk Order Payment - ${paymentData.businessName}`;
+        } else {
+          amount = 2999 * paymentData.quantity * 100;
+          description = `Fashion Order - ${paymentData.quantity} item(s)`;
+        }
+
+        const options = {
+          key: 'rzp_test_mNqMMML5tW9GXI',
+          amount: amount,
+          currency: 'INR',
+          name: 'Hari Trends',
+          description: description,
+          image: './fav2.svg',
+          handler: function (response) {
+            console.log('Payment successful:', response);
+            showSuccess(response);
+          },
+          prefill: {
+            name: paymentData.type === 'bulk' ? paymentData.contactPerson : paymentData.name,
+            email: paymentData.email,
+            contact: paymentData.phone
+          },
+          theme: {
+            color: '#D4AF37'
+          },
+          modal: {
+            ondismiss: function() {
+              isProcessing = false;
+              payButton.innerHTML = '<span>💳</span> Pay Now';
+              payButton.disabled = false;
+            }
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+      }
+
+      function showSuccess(response) {
+        const paymentSection = document.getElementById('paymentSection');
+        paymentSection.innerHTML = `
+          <div class="payment-success">
+            <div class="success-icon">✅</div>
+            <h1>Payment Successful!</h1>
+            <p>Payment ID: ${response.razorpay_payment_id}</p>
+            <p>Thank you for your order. We'll contact you within 24 hours.</p>
+            <button class="back-button" onclick="window.close()">Close Window</button>
+          </div>
+        `;
+      }
+
+      function showError(message) {
+        const paymentSection = document.getElementById('paymentSection');
+        paymentSection.innerHTML = `
+          <div class="payment-success">
+            <h1>Payment Error</h1>
+            <p>${message}</p>
+            <button class="back-button" onclick="window.close()">Close Window</button>
+          </div>
+        `;
+      }
+
+      // Initialize payment page
+      window.onload = function() {
+        getPaymentData();
+      };
+    </script>
+  </body>
+</html>

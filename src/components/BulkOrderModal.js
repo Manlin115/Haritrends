@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Package, Users, Calculator, Shield, Lock, CreditCard } from 'lucide-react';
 
 const BulkOrderModal = ({ isOpen, onClose }) => {
@@ -118,6 +119,7 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
         // sendBulkOrderToBackend(response, formData);
         
         setIsProcessing(false);
+        // Only close modal after successful payment
         onClose();
       },
       prefill: {
@@ -137,7 +139,9 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
       },
       modal: {
         ondismiss: function() {
+          // Reset processing state when payment modal is dismissed
           setIsProcessing(false);
+          // Don't close the bulk order modal here - let user try again or close manually
         }
       }
     };
@@ -159,12 +163,12 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="payment-modal-overlay" onClick={onClose}>
+  return createPortal(
+    <div className="payment-modal-overlay" data-modal="bulk" onClick={isProcessing ? null : onClose}>
       <div className="bulk-order-modal" onClick={(e) => e.stopPropagation()}>
         <div className="payment-modal-header">
           <h2><Package size={28} /> Bulk Orders</h2>
-          <button className="close-button" onClick={onClose}>
+          <button className="close-button" onClick={isProcessing ? null : onClose} disabled={isProcessing}>
             <X size={24} />
           </button>
         </div>
@@ -350,7 +354,8 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

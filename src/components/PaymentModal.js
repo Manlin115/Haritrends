@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, CreditCard, Shield, Lock } from 'lucide-react';
 
 const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
@@ -81,7 +82,9 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
       },
       modal: {
         ondismiss: function() {
+          // Reset processing state when payment modal is dismissed
           setIsProcessing(false);
+          // Don't close the payment modal here - let user try again or close manually
         }
       }
     };
@@ -92,12 +95,12 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="payment-modal-overlay">
-      <div className="payment-modal">
+  return createPortal(
+    <div className="payment-modal-overlay" data-modal="payment" onClick={isProcessing ? null : onClose}>
+      <div className="payment-modal" onClick={(e) => e.stopPropagation()}>
         <div className="payment-modal-header">
           <h2>Complete Your Order</h2>
-          <button className="close-button" onClick={onClose}>
+          <button className="close-button" onClick={isProcessing ? null : onClose} disabled={isProcessing}>
             <X size={24} />
           </button>
         </div>
@@ -233,7 +236,8 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
