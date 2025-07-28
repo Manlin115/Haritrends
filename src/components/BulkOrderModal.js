@@ -73,7 +73,7 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
     }
 
     const options = {
-      key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your actual Razorpay Key ID
+      key: 'rzp_test_mNqMMML5tW9GXI', // Your Razorpay Test Key ID
       amount: advanceAmount,
       currency: 'INR',
       name: 'Hari Trends - Bulk Orders',

@@ -49,7 +49,7 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
     const amount = 2999 * formData.quantity * 100; // ₹2999 per dress
 
     const options = {
-      key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your actual Razorpay Key ID
+      key: 'rzp_test_mNqMMML5tW9GXI', // Your Razorpay Test Key ID
       amount: amount,
       currency: 'INR',
       name: 'Hari Trends',
