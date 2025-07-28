@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PaymentModal from './PaymentModal';
 
 const Gallery = () => {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const dresses = [
     {
       id: 1,
@@ -40,6 +43,11 @@ const Gallery = () => {
     }
   ];
 
+  const handleBuyNow = (dress) => {
+    setSelectedItem(dress);
+    setIsPaymentModalOpen(true);
+  };
+
   return (
     <section id="gallery" className="section">
       <h2>Our Collection</h2>
@@ -50,10 +58,22 @@ const Gallery = () => {
             <div className="gallery-overlay">
               <h3>{dress.title}</h3>
               <p>{dress.description}</p>
+              <button 
+                className="buy-now-btn"
+                onClick={() => handleBuyNow(dress)}
+              >
+                Buy Now - ₹2,999
+              </button>
             </div>
           </div>
         ))}
       </div>
+      
+      <PaymentModal 
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        selectedItem={selectedItem}
+      />
     </section>
   );
 };

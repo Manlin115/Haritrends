@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import BulkOrderModal from './BulkOrderModal';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,9 +70,22 @@ const Header = () => {
                 Contact
               </a>
             </li>
+            <li>
+              <button 
+                className="bulk-order-btn"
+                onClick={() => setIsBulkModalOpen(true)}
+              >
+                Bulk Orders
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
+      
+      <BulkOrderModal 
+        isOpen={isBulkModalOpen}
+        onClose={() => setIsBulkModalOpen(false)}
+      />
     </header>
   );
 };
