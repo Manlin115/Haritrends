@@ -51,16 +51,16 @@ const Footer = () => {
         
         <div className="footer-section">
           <h3>Contact Info</h3>
-          <p>123 Fashion Street, Style District</p>
-          <p>New York, NY 10001</p>
+          <p>87 Konavaikkal Vasavi College Po,</p>
+          <p> Konavaikkal Erode - 638316</p>
           <p>Phone: +1 (555) 123-4567</p>
-          <p>Email: info@haritrends.com</p>
+          <p>Email: haritrendz22@gmail.com</p>
           <p>Store Hours: Mon-Sat 10AM-8PM</p>
         </div>
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; 2024 Hari Trends. All rights reserved. | Designed with ❤️ for fashion lovers</p>
+        <p>&copy; 2025 Hari Trends. All rights reserved. | Designed with ❤️ for fashion lovers</p>
       </div>
     </footer>
   );

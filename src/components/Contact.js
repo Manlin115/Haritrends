@@ -34,7 +34,7 @@ const Contact = () => {
               <FaMapMarkerAlt />
               <div>
                 <h4>Visit Our Store</h4>
-                <p>123 Fashion Street, Style District<br />New York, NY 10001</p>
+                <p>87 Konavaikkal Vasavi College Po,<br />Konavaikkal Erode - 638316</p>
               </div>
             </div>
             
@@ -50,7 +50,7 @@ const Contact = () => {
               <FaEnvelope />
               <div>
                 <h4>Email Us</h4>
-                <p>info@haritrends.com</p>
+                <p>haritrendz22@gmail.com</p>
               </div>
             </div>
             

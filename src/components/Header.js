@@ -32,7 +32,7 @@ const Header = () => {
           className="logo"
           onClick={(e) => smoothScroll(e, '#home')}
         >
-          Hari Trends
+          Hari Trendz
         </a>
         <nav>
           <ul className="nav">

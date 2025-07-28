@@ -10,7 +10,7 @@ const Gallery = () => {
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1566479179817-c0b5b4b4b1e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1088&q=80",
+      image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1088&q=80",
       title: "Casual Summer Dress",
       description: "Light and comfortable for everyday wear"
     },
@@ -34,7 +34,7 @@ const Gallery = () => {
     },
     {
       id: 6,
-      image: "https://images.unsplash.com/photo-1583496661160-fb5886a13d27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1088&q=80",
+      image: "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1088&q=80",
       title: "Bridal Collection",
       description: "Make your special day unforgettable"
     }
