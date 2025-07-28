@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Package, Users, Calculator, Shield, Lock, CreditCard } from 'lucide-react';
+import { X, Package, Users, Calculator, Shield, Lock, CreditCard, CheckCircle, Clock, Phone } from 'lucide-react';
 
 const BulkOrderModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +13,8 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState(null);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -167,7 +169,17 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
       image: '/fav2.png',
       handler: function (response) {
         console.log('Bulk payment successful:', response);
-        alert(`Bulk order payment successful! Payment ID: ${response.razorpay_payment_id}\n\nAmount: ${getCurrencySymbol(formData.currency)}${formData.customAmount}\n\nOur team will contact you within 24 hours to finalize your bulk order details.`);
+        
+        // Store payment details for success modal
+        setPaymentDetails({
+          paymentId: response.razorpay_payment_id,
+          amount: formData.customAmount,
+          currency: formData.currency,
+          businessName: formData.businessName,
+          contactPerson: formData.contactPerson,
+          email: formData.email,
+          phone: formData.phone
+        });
         
         // Here you can send the bulk order details to your backend
         // sendBulkOrderToBackend(response, formData);
@@ -176,8 +188,8 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
         setIsRazorpayOpen(false);
         // Remove body class
         document.body.classList.remove('razorpay-open');
-        // Only close modal after successful payment
-        onClose();
+        // Show success modal instead of alert
+        setShowSuccessModal(true);
       },
       prefill: {
         name: formData.contactPerson,
@@ -216,6 +228,12 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
     paymentObject.open();
   };
 
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    setPaymentDetails(null);
+    onClose(); // Close the main bulk order modal
+  };
+
   const currencies = [
     { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
     { code: 'USD', name: 'US Dollar', symbol: '$' },
@@ -227,9 +245,87 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
     { code: 'AED', name: 'UAE Dirham', symbol: 'د.إ' }
   ];
 
+  // Success Modal Component
+  const SuccessModal = () => {
+    if (!showSuccessModal || !paymentDetails) return null;
+
+    return createPortal(
+      <div className="payment-modal-overlay success-modal-overlay" onClick={handleSuccessModalClose}>
+        <div className="success-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="success-header">
+            <div className="success-icon">
+              <CheckCircle size={48} />
+            </div>
+            <h2>Bulk Order Payment Successful!</h2>
+            <button className="close-button" onClick={handleSuccessModalClose}>
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="success-content">
+            <div className="payment-info">
+              <div className="info-row">
+                <span className="label">Payment ID:</span>
+                <span className="value">{paymentDetails.paymentId}</span>
+              </div>
+              <div className="info-row">
+                <span className="label">Amount:</span>
+                <span className="value amount">{getCurrencySymbol(paymentDetails.currency)}{parseFloat(paymentDetails.amount).toLocaleString()}</span>
+              </div>
+              <div className="info-row">
+                <span className="label">Business:</span>
+                <span className="value">{paymentDetails.businessName}</span>
+              </div>
+              <div className="info-row">
+                <span className="label">Contact Person:</span>
+                <span className="value">{paymentDetails.contactPerson}</span>
+              </div>
+            </div>
+
+            <div className="next-steps">
+              <div className="step-item">
+                <Clock className="step-icon" />
+                <div className="step-content">
+                  <h4>What's Next?</h4>
+                  <p>Our team will contact you within <strong>24 hours</strong> to finalize your bulk order details.</p>
+                </div>
+              </div>
+              
+              <div className="step-item">
+                <Phone className="step-icon" />
+                <div className="step-content">
+                  <h4>Contact Information</h4>
+                  <p>We'll reach out to <strong>{paymentDetails.email}</strong> and <strong>{paymentDetails.phone}</strong></p>
+                </div>
+              </div>
+              
+              <div className="step-item">
+                <Package className="step-icon" />
+                <div className="step-content">
+                  <h4>Order Processing</h4>
+                  <p>Your bulk order requirements will be discussed and customized according to your needs.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="success-actions">
+              <button className="primary-button" onClick={handleSuccessModalClose}>
+                Continue Shopping
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>,
+      document.body
+    );
+  };
+
   if (!isOpen) return null;
 
-  return createPortal(
+  return (
+    <>
+      <SuccessModal />
+      {createPortal(
     <div 
       className="payment-modal-overlay" 
       data-modal="bulk" 
@@ -427,6 +523,8 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
       </div>
     </div>,
     document.body
+  )}
+    </>
   );
 };
 
