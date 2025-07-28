@@ -42,7 +42,7 @@ const Contact = () => {
               <FaPhone />
               <div>
                 <h4>Call Us</h4>
-                <p>+1 (555) 123-4567</p>
+                <p>+91 9566046047</p>
               </div>
             </div>
             

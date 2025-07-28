@@ -53,7 +53,7 @@ const Footer = () => {
           <h3>Contact Info</h3>
           <p>87 Konavaikkal Vasavi College Po,</p>
           <p> Konavaikkal Erode - 638316</p>
-          <p>Phone: +1 (555) 123-4567</p>
+          <p>Phone: +91 9566046047</p>
           <p>Email: haritrendz22@gmail.com</p>
           <p>Store Hours: Mon-Sat 10AM-8PM</p>
         </div>

@@ -876,6 +876,16 @@ body {
   justify-content: center;
   z-index: 10000;
   backdrop-filter: blur(10px);
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
 .payment-modal {
@@ -886,6 +896,9 @@ body {
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  margin: auto;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .payment-modal-header {
@@ -1469,13 +1482,27 @@ body {
   border: 1px solid rgba(212, 175, 55, 0.2);
   max-width: 900px;
   width: 95%;
-  max-height: 95vh;
+  max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  margin: auto;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .bulk-order-content {
   padding: 2rem;
+}
+
+/* Ensure modal stays centered */
+.payment-modal-overlay .bulk-order-modal,
+.payment-modal-overlay .payment-modal {
+  transform: none;
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
 }
 
 .bulk-order-intro {
@@ -1777,12 +1804,20 @@ body {
   
   .payment-modal {
     width: 95%;
-    margin: 1rem;
+    margin: auto;
+    max-height: 85vh;
   }
   
   .bulk-order-modal {
-    width: 98%;
-    margin: 0.5rem;
+    width: 95%;
+    margin: auto;
+    max-height: 85vh;
+  }
+  
+  .payment-modal-overlay {
+    padding: 0.5rem;
+    align-items: center;
+    justify-content: center;
   }
   
   .form-row {

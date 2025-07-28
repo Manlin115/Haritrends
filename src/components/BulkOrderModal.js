@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Package, Users, Calculator, Shield, Lock, CreditCard } from 'lucide-react';
 
 const BulkOrderModal = ({ isOpen, onClose }) => {
@@ -11,6 +11,30 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
     currency: 'INR'
   });
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('modal-open');
+      // Store current scroll position
+      const scrollY = window.scrollY;
+      document.body.style.top = `-${scrollY}px`;
+    } else {
+      document.body.classList.remove('modal-open');
+      // Restore scroll position
+      const scrollY = document.body.style.top;
+      document.body.style.top = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('modal-open');
+      document.body.style.top = '';
+    };
+  }, [isOpen]);
 
   const handleInputChange = (e) => {
     setFormData({

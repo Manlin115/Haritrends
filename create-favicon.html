@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hari Trends Favicon Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        canvas { border: 2px solid #ddd; margin: 10px; }
+        button { background: #D4AF37; color: #1A1A1A; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #B8941F; }
+        .option { display: inline-block; text-align: center; margin: 10px; }
+        h1 { color: #1A1A1A; }
+        h3 { color: #D4AF37; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Hari Trends Professional Favicon Generator</h1>
+        
+        <div class="option">
+            <h3>Option 1: Letter H (Simple)</h3>
+            <canvas id="canvas1" width="32" height="32"></canvas>
+            <br>
+            <button onclick="downloadFavicon('canvas1', 'hari-trends-favicon-h.png')">Download H Favicon</button>
+        </div>
+        
+        <div class="option">
+            <h3>Option 2: HT Monogram</h3>
+            <canvas id="canvas2" width="32" height="32"></canvas>
+            <br>
+            <button onclick="downloadFavicon('canvas2', 'hari-trends-favicon-ht.png')">Download HT Favicon</button>
+        </div>
+        
+        <div class="option">
+            <h3>Option 3: H in Circle</h3>
+            <canvas id="canvas3" width="32" height="32"></canvas>
+            <br>
+            <button onclick="downloadFavicon('canvas3', 'hari-trends-favicon-circle.png')">Download Circle Favicon</button>
+        </div>
+    </div>
+    
+    <script>
+        // Option 1: Simple H
+        function drawOption1() {
+            const canvas = document.getElementById('canvas1');
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#1A1A1A';
+            ctx.fillRect(0, 0, 32, 32);
+            
+            // Letter H
+            ctx.fillStyle = '#D4AF37';
+            ctx.fillRect(8, 8, 3, 16);  // Left vertical
+            ctx.fillRect(21, 8, 3, 16); // Right vertical
+            ctx.fillRect(8, 14, 16, 3); // Horizontal bar
+        }
+        
+        // Option 2: HT Monogram
+        function drawOption2() {
+            const canvas = document.getElementById('canvas2');
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#1A1A1A';
+            ctx.fillRect(0, 0, 32, 32);
+            
+            // H
+            ctx.fillStyle = '#D4AF37';
+            ctx.fillRect(4, 8, 2, 12);  // Left vertical
+            ctx.fillRect(10, 8, 2, 12); // Right vertical
+            ctx.fillRect(4, 13, 8, 2);  // Horizontal bar
+            
+            // T
+            ctx.fillRect(18, 8, 10, 2); // Top horizontal
+            ctx.fillRect(22, 8, 2, 12); // Vertical
+            
+            // Underline
+            ctx.fillRect(4, 24, 24, 2);
+        }
+        
+        // Option 3: H in Circle
+        function drawOption3() {
+            const canvas = document.getElementById('canvas3');
+            const ctx = canvas.getContext('2d');
+            
+            // Background circle
+            ctx.fillStyle = '#1A1A1A';
+            ctx.beginPath();
+            ctx.arc(16, 16, 16, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Border circle
+            ctx.strokeStyle = '#D4AF37';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(16, 16, 14, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Letter H
+            ctx.fillStyle = '#D4AF37';
+            ctx.fillRect(10, 10, 2, 12); // Left vertical
+            ctx.fillRect(20, 10, 2, 12); // Right vertical
+            ctx.fillRect(10, 15, 12, 2); // Horizontal bar
+        }
+        
+        function downloadFavicon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Draw all options on page load
+        drawOption1();
+        drawOption2();
+        drawOption3();
+    </script>
+</body>
+</html>
