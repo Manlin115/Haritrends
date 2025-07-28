@@ -938,6 +938,48 @@ html .payment-modal-overlay {
   z-index: 2147483647 !important;
 }
 
+/* Ensure PaymentModal appears on top of BulkOrderModal */
+.payment-modal-overlay[data-modal="payment"] {
+  z-index: 100000 !important;
+}
+
+/* Lower z-index for BulkOrderModal when PaymentModal is open */
+.payment-modal-overlay[data-modal="bulk"] {
+  z-index: 99999 !important;
+}
+
+/* Razorpay Payment Gateway - Ensure it's always on top */
+.razorpay-container,
+.razorpay-checkout-frame,
+iframe[src*="razorpay"],
+div[id*="razorpay"],
+div[class*="razorpay"],
+[id^="razorpay"],
+[class^="razorpay"],
+[class*="razorpay"] {
+  z-index: 2147483647 !important;
+  position: fixed !important;
+}
+
+.razorpay-backdrop,
+div[class*="razorpay-backdrop"] {
+  z-index: 2147483646 !important;
+  position: fixed !important;
+}
+
+/* Ensure Razorpay appears above all other elements */
+body.razorpay-open * {
+  z-index: auto !important;
+}
+
+body.razorpay-open .razorpay-container,
+body.razorpay-open .razorpay-checkout-frame,
+body.razorpay-open iframe[src*="razorpay"],
+body.razorpay-open div[id*="razorpay"],
+body.razorpay-open div[class*="razorpay"] {
+  z-index: 2147483647 !important;
+}
+
 .payment-modal {
   background: var(--charcoal);
   border: 1px solid rgba(212, 175, 55, 0.2);
@@ -2550,4 +2592,27 @@ html .payment-modal-overlay {
   pointer-events: auto !important;
   transform: none !important;
   margin: auto !important;
+}
+
+/* Razorpay Modal Z-Index Fix */
+.razorpay-container,
+.razorpay-checkout-frame,
+iframe[src*="razorpay"] {
+  z-index: 2147483648 !important;
+  position: fixed !important;
+}
+
+/* Ensure Razorpay backdrop is also on top */
+.razorpay-backdrop {
+  z-index: 2147483647 !important;
+  position: fixed !important;
+}
+
+/* Hide bulk order modal when Razorpay is open */
+.bulk-order-modal.razorpay-active {
+  display: none !important;
+}
+
+.payment-modal-overlay.razorpay-active {
+  display: none !important;
 }

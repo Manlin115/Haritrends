@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, CreditCard, Shield, Lock } from 'lucide-react';
 
@@ -12,6 +12,37 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
     quantity: 1
   });
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
+
+  // Handle Razorpay modal z-index
+  useEffect(() => {
+    if (isRazorpayOpen) {
+      // Inject styles to ensure Razorpay is on top
+      const style = document.createElement('style');
+      style.id = 'razorpay-z-index-fix-payment';
+      style.textContent = `
+        .razorpay-container,
+        .razorpay-checkout-frame,
+        iframe[src*="razorpay"],
+        div[id*="razorpay"] {
+          z-index: 2147483648 !important;
+          position: fixed !important;
+        }
+        .razorpay-backdrop {
+          z-index: 2147483647 !important;
+          position: fixed !important;
+        }
+      `;
+      document.head.appendChild(style);
+
+      return () => {
+        const existingStyle = document.getElementById('razorpay-z-index-fix-payment');
+        if (existingStyle) {
+          existingStyle.remove();
+        }
+      };
+    }
+  }, [isRazorpayOpen]);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -65,6 +96,7 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
         // sendPaymentDetailsToBackend(response, formData);
         
         setIsProcessing(false);
+        setIsRazorpayOpen(false);
         onClose();
       },
       prefill: {
@@ -81,9 +113,14 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
         color: '#D4AF37' // Your gold color
       },
       modal: {
+        onopen: function() {
+          // Hide payment modal when Razorpay opens
+          setIsRazorpayOpen(true);
+        },
         ondismiss: function() {
           // Reset processing state when payment modal is dismissed
           setIsProcessing(false);
+          setIsRazorpayOpen(false);
           // Don't close the payment modal here - let user try again or close manually
         }
       }
@@ -96,7 +133,12 @@ const PaymentModal = ({ isOpen, onClose, selectedItem }) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="payment-modal-overlay" data-modal="payment" onClick={isProcessing ? null : onClose}>
+    <div 
+      className="payment-modal-overlay" 
+      data-modal="payment" 
+      onClick={isProcessing ? null : onClose}
+      style={{ display: isRazorpayOpen ? 'none' : 'flex' }}
+    >
       <div className="payment-modal" onClick={(e) => e.stopPropagation()}>
         <div className="payment-modal-header">
           <h2>Complete Your Order</h2>

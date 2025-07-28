@@ -12,6 +12,7 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
     currency: 'INR'
   });
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -33,9 +34,62 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
     // Cleanup on unmount
     return () => {
       document.body.classList.remove('modal-open');
+      document.body.classList.remove('razorpay-open');
       document.body.style.top = '';
     };
   }, [isOpen]);
+
+  // Handle Razorpay modal z-index - Ensure it appears on top of everything
+  useEffect(() => {
+    if (isRazorpayOpen) {
+      // Inject comprehensive styles to ensure Razorpay is always on top
+      const style = document.createElement('style');
+      style.id = 'razorpay-z-index-fix';
+      style.textContent = `
+        /* Razorpay main container */
+        .razorpay-container,
+        .razorpay-checkout-frame,
+        iframe[src*="razorpay"],
+        div[id*="razorpay"],
+        div[class*="razorpay"] {
+          z-index: 2147483647 !important;
+          position: fixed !important;
+        }
+        
+        /* Razorpay backdrop */
+        .razorpay-backdrop,
+        div[class*="razorpay-backdrop"] {
+          z-index: 2147483646 !important;
+          position: fixed !important;
+        }
+        
+        /* All Razorpay related elements */
+        [id^="razorpay"],
+        [class^="razorpay"],
+        [class*="razorpay"] {
+          z-index: 2147483647 !important;
+        }
+        
+        /* Ensure no other elements interfere */
+        body > div:not([id*="razorpay"]):not([class*="razorpay"]) {
+          z-index: auto !important;
+        }
+        
+        /* Hide all modals when Razorpay is open */
+        .payment-modal-overlay[data-modal="bulk"] {
+          display: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+
+      return () => {
+        const existingStyle = document.getElementById('razorpay-z-index-fix');
+        if (existingStyle) {
+          existingStyle.remove();
+        }
+      };
+    }
+  }, [isRazorpayOpen]);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -119,6 +173,9 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
         // sendBulkOrderToBackend(response, formData);
         
         setIsProcessing(false);
+        setIsRazorpayOpen(false);
+        // Remove body class
+        document.body.classList.remove('razorpay-open');
         // Only close modal after successful payment
         onClose();
       },
@@ -138,9 +195,18 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
         color: '#D4AF37'
       },
       modal: {
+        onopen: function() {
+          // Hide bulk order modal when Razorpay opens
+          setIsRazorpayOpen(true);
+          // Add body class for additional z-index control
+          document.body.classList.add('razorpay-open');
+        },
         ondismiss: function() {
           // Reset processing state when payment modal is dismissed
           setIsProcessing(false);
+          setIsRazorpayOpen(false);
+          // Remove body class
+          document.body.classList.remove('razorpay-open');
           // Don't close the bulk order modal here - let user try again or close manually
         }
       }
@@ -164,7 +230,12 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="payment-modal-overlay" data-modal="bulk" onClick={isProcessing ? null : onClose}>
+    <div 
+      className="payment-modal-overlay" 
+      data-modal="bulk" 
+      onClick={isProcessing ? null : onClose}
+      style={{ display: isRazorpayOpen ? 'none' : 'flex' }}
+    >
       <div className="bulk-order-modal" onClick={(e) => e.stopPropagation()}>
         <div className="payment-modal-header">
           <h2><Package size={28} /> Bulk Orders</h2>
