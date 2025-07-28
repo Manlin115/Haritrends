@@ -164,7 +164,7 @@ const BulkOrderModal = ({ isOpen, onClose }) => {
       currency: 'INR',
       name: 'Hari Trends - Bulk Orders',
       description: `Bulk Order Payment - ${formData.businessName}`,
-      image: '/logo192.png',
+      image: '/fav2.png',
       handler: function (response) {
         console.log('Bulk payment successful:', response);
         alert(`Bulk order payment successful! Payment ID: ${response.razorpay_payment_id}\n\nAmount: ${getCurrencySymbol(formData.currency)}${formData.customAmount}\n\nOur team will contact you within 24 hours to finalize your bulk order details.`);
