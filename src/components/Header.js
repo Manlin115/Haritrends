@@ -4,6 +4,7 @@ import BulkOrderModal from './BulkOrderModal';
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +25,17 @@ const Header = () => {
         block: 'start'
       });
     }
+    // Close mobile menu after navigation
+    setIsMobileMenuOpen(false);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handlePaymentsClick = () => {
+    setIsBulkModalOpen(true);
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -36,7 +48,20 @@ const Header = () => {
         >
           Hari Trendz
         </a>
-        <nav>
+        
+        {/* Hamburger Menu Button */}
+        <button 
+          className="mobile-menu-toggle"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+          <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+          <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+        </button>
+        
+        {/* Desktop Navigation */}
+        <nav className="desktop-nav">
           <ul className="nav">
             <li>
               <a 
@@ -75,11 +100,71 @@ const Header = () => {
                 className="bulk-order-btn"
                 onClick={() => setIsBulkModalOpen(true)}
               >
-                Bulk Orders
+                Payments
               </button>
             </li>
           </ul>
         </nav>
+        
+        {/* Mobile Side Slide Bar */}
+        <div className={`mobile-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
+          <div className="mobile-sidebar-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
+          <div className="mobile-sidebar-content">
+            <div className="mobile-sidebar-header">
+              <h3>Hari Trendz</h3>
+              <button 
+                className="mobile-sidebar-close"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+            <nav className="mobile-nav">
+              <ul>
+                <li>
+                  <a 
+                    href="#home"
+                    onClick={(e) => smoothScroll(e, '#home')}
+                  >
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#about"
+                    onClick={(e) => smoothScroll(e, '#about')}
+                  >
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#gallery"
+                    onClick={(e) => smoothScroll(e, '#gallery')}
+                  >
+                    Gallery
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#contact"
+                    onClick={(e) => smoothScroll(e, '#contact')}
+                  >
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <button 
+                    className="mobile-payments-btn"
+                    onClick={handlePaymentsClick}
+                  >
+                    Payments
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
       </div>
       
       <BulkOrderModal 
