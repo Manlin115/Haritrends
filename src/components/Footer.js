@@ -37,16 +37,6 @@ const Footer = () => {
           <p><a href="#about">About Us</a></p>
           <p><a href="#gallery">Our Collection</a></p>
           <p><a href="#contact">Contact</a></p>
-          <p><a href="#size-guide">Size Guide</a></p>
-        </div>
-        
-        <div className="footer-section">
-          <h3>Customer Service</h3>
-          <p><a href="#shipping">Shipping Info</a></p>
-          <p><a href="#returns">Returns & Exchanges</a></p>
-          <p><a href="#faq">FAQ</a></p>
-          <p><a href="#privacy">Privacy Policy</a></p>
-          <p><a href="#terms">Terms of Service</a></p>
         </div>
         
         <div className="footer-section">
